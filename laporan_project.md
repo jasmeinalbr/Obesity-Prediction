@@ -1,4 +1,5 @@
-# Laporan Proyek Machine Learning - Jasmein Al-baar Putri Rus'an
+# Laporan Proyek Machine Learning
+**Nama: Jasmein Al-baar Putri Rus'an**
 
 ## **Domain Proyek**
 
@@ -95,9 +96,9 @@ Distribusi tinggi badan berbentuk mendekati normal (bell curve), dengan rata-rat
 
 #### Distribusi Berat Badan
 
-![alt text](<assets/distribusi weight.png>)
+![Distribusi Berat Badan](<assets/distribusi weight.png>)
 
-Distribusi berat badan 
+Distribusi berat badan membentuk kurva yang menyerupai distribusi normal, dengan puncak sekitar 70–80 kg. Hal ini menunjukkan bahwa sebagian besar individu dalam dataset memiliki berat badan dalam rentang rata-rata.
 
 #### Distribusi BMI
 
@@ -123,6 +124,12 @@ Visualisasi korelasi menunjukkan bahwa:
 #### Outliers
 
 Selama eksplorasi data, dilakukan visualisasi distribusi dan boxplot untuk fitur numerik. Dari hasil tersebut, ditemukan adanya nilai-nilai ekstrem (outlier) pada fitur BMI, Height, dan Weight.
+
+![alt text](<assets/outliers bmi.png>)
+
+![alt text](<assets/outliers height.png>)
+
+![alt text](<assets/outliers weight.png>)
 
 Namun, karena outlier adalah bagian dari variasi alami dalam data kesehatan, keputusan apakah akan menghapus atau mempertahankannya dijelaskan secara lebih lengkap di bagian Data Preparation.
 
@@ -224,6 +231,26 @@ Kekurangannya adalah:
 
 ### 3. Evaluasi Awal
 
+#### Confusion Matrix - Logistic Regression
+
+![Confusion Matrix Logistic Regression](<assets/confusion matrix lr.png>)
+
+Model Logistic Regression menunjukkan kinerja yang cukup baik dengan akurasi sebesar 96.5%. Namun masih terdapat kesalahan klasifikasi pada beberapa sampel:
+- 2 data kelas "Obese" salah diklasifikasikan sebagai "Normal"
+- 2 data kelas "Overweight" diklasifikasikan sebagai "Obese"
+- 1 data kelas "Underweight" diklasifikasikan sebagai "Normal"
+
+Kesalahan ini kemungkinan disebabkan keterbatasan Logistic Regression dalam menangani hubungan non-linear antar fitur.
+
+#### Confusion Matrix - Random Forest
+
+![Confusion Matrix Random Forest](<assets/confusion matrix rf.png>)
+
+Model Random Forest memperlihatkan kinerja yang jauh lebih baik dengan akurasi 99.5%, dan hanya terjadi 1 kesalahan klasifikasi:
+- 1 data kelas "Overweight" diklasifikasikan sebagai "Obese"
+
+Selain itu, semua kelas lainnya diprediksi secara sempurna tanpa kesalahan. Hal ini menunjukkan bahwa Random Forest lebih mampu mengenali pola data yang kompleks dibandingkan Logistic Regression.
+
 Evaluasi awal dilakukan terhadap kedua model menggunakan metrik:
 
 - Accuracy
@@ -311,8 +338,13 @@ Model juga dievaluasi menggunakan **confusion matrix**, yang menunjukkan bahwa:
 - Tidak ada kelas yang tertinggal secara signifikan
 - Kelas **Obese** memiliki recall sedikit lebih rendah (~0.97), namun precision tetap sempurna (1.00)
 
-📊 *Visualisasi confusion matrix* ditampilkan di bagian notebook sebagai pendukung interpretasi per kelas.
+#### Confusion Matrix - Random Forest Tuned
 
+![Confusion Matrix RF Tuned](<assets/confusion matrix rf tuned.png>)
+
+Confusion matrix pada model Random Forest setelah tuning menunjukkan hasil yang identik dengan model sebelum tuning. Semua prediksi berhasil dilakukan dengan sangat akurat, hanya terdapat 1 kesalahan klasifikasi pada kelas "Overweight" yang diklasifikasikan sebagai "Obese".
+
+Performa ini mengonfirmasi bahwa tuning parameter berhasil menjaga keakuratan tinggi dan mencegah overfitting. Model tidak mengalami penurunan kinerja meskipun telah dilakukan penyempurnaan parameter.
 
 ### Kesimpulan Evaluasi
 
