@@ -1,6 +1,6 @@
 # Laporan Proyek Machine Learning - Jasmein Al-baar Putri Rus'an
 
-## Domain Proyek
+## **Domain Proyek**
 
 Obesitas merupakan salah satu masalah kesehatan global yang terus meningkat dan menimbulkan dampak serius pada kualitas hidup masyarakat. Berdasarkan data dari World Health Organization [(WHO, 2023](https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight), lebih dari 1 miliar orang di seluruh dunia mengalami kelebihan berat badan, termasuk 650 juta orang dewasa yang tergolong obesitas. Prevalensinya telah meningkat tiga kali lipat sejak 1975, dan diperkirakan akan menyebabkan lebih dari 167 juta orang mengalami dampak kesehatan yang serius pada tahun 2025. Kondisi ini meningkatkan risiko berbagai penyakit kronis seperti diabetes tipe 2, penyakit jantung, kanker, hingga gangguan metabolisme lainnya.
 
@@ -40,17 +40,19 @@ Pada proyek ini, saya menggunakan Obesity Prediction Dataset yang diambil dari K
 Sumber Dataset:
 Dataset ini tersedia di Kaggle [Obesity Prediction Dataset](https://www.kaggle.com/datasets/mrsimple07/obesity-prediction/data).
 
-### Exploratory Data Analysis
+## Exploratory Data Analysis
 
-#### Jumlah Data dan Fitur
+### Jumlah Data dan Fitur
 Dataset ini terdiri dari 1.000 data entri dan 7 kolom (fitur), termasuk label target. Fitur-fitur tersebut mencakup informasi demografis, indikator fisik, dan gaya hidup yang berkaitan dengan obesitas. Semua fitur memiliki nilai yang valid dan tidak terdapat data kosong (missing values).
 
-#### Tipe Data
+### Tipe Data
+
 Hasil pemeriksaan tipe data menunjukkan bahwa:
+
 - Fitur seperti Age, Height, Weight, BMI, dan Physical Activity Level adalah numerik
 - Fitur seperti Gender dan Obesity Category adalah kategorikal
 
-#### Tabel Statistik Deskriptif
+### Tabel Statistik Deskriptif
 
 | Fitur                  | Count  | Mean    | Std Dev | Min   | 25%    | 50%    | 75%    | Max   |
 |------------------------|--------|---------|---------|--------|--------|--------|--------|--------|
@@ -65,57 +67,60 @@ Statistik deskriptif untuk fitur numerik menunjukkan rentang nilai yang wajar:
 - BMI berkisar dari nilai normal hingga obesitas berat
 - Weight dan Height juga memiliki variasi yang mencerminkan populasi umum
 
-#### Distribusi Data
-- Distribusi Gender
+### Distribusi Data
+
+#### Distribusi Gender
+  
 ![alt text](<assets/distribusi age.png>)
 
 Distribusi gender menunjukkan bahwa data relatif seimbang antara laki-laki dan perempuan.
 
-- Distribusi Kategori Obesitas
+#### Distribusi Kategori Obesitas
+  
 ![alt text](<assets/distribusi obesity category.png>)
 
 Label target ObesityCategory memiliki 4 kelas utama: Underweight, Normal weight, Overweight, dan Obese. Kelas terbanyak adalah Normal weight, diikuti oleh Overweight, sedangkan Underweight adalah yang paling sedikit. Distribusi ini penting untuk diperhatikan dalam pemilihan metrik evaluasi, karena data tidak sepenuhnya seimbang.
 
-- Distribusi Usia
+#### Distribusi Usia
 
 ![alt text](<assets/distribusi age.png>)
 
 Distribusi usia tersebar merata dari usia 18 hingga 80 tahun, dengan jumlah tertinggi berada di usia 70–80 tahun. Ini menunjukkan variasi umur yang baik dalam dataset.
 
-- Distribusi Tinggi Badan
+#### Distribusi Tinggi Badan
 
 ![alt text](<assets/distribusi height.png>)
 
 Distribusi tinggi badan berbentuk mendekati normal (bell curve), dengan rata-rata sekitar 165–170 cm.
 
-- Distribusi Berat Badan
+#### Distribusi Berat Badan
 
 ![alt text](<assets/distribusi weight.png>)
 
 Distribusi berat badan 
 
-- Distribusi BMI
+#### Distribusi BMI
 
 ![alt text](<assets/distribusi bmi.png>)
 
 BMI memiliki distribusi normal yang sedikit miring ke kanan (positively skewed), dengan sebagian besar nilai berada dalam rentang normal dan overweight.
 
-- Distribusi Physical Activity Level
+#### Distribusi Physical Activity Level
 
 ![alt text](<assets/distribusi physical activity level.png>)
 
 Fitur PhysicalActivityLevel memiliki 4 nilai kategori (1 hingga 4) yang hampir seimbang jumlahnya, mencerminkan variasi aktivitas fisik dalam populasi.
 
-- Korelasi antar Fitur Numerik
+#### Korelasi antar Fitur Numerik
 
 ![alt text](<assets/heatmap numerik.png>)
 
 Visualisasi korelasi menunjukkan bahwa:
-    - BMI dan Weight memiliki korelasi sangat kuat (0.86)
-    - Height dan BMI memiliki korelasi negatif yang signifikan (-0.48)
-    - Korelasi antara fitur numerik lainnya relatif lemah
+- BMI dan Weight memiliki korelasi sangat kuat (0.86)
+- Height dan BMI memiliki korelasi negatif yang signifikan (-0.48)
+- Korelasi antara fitur numerik lainnya relatif lemah
 
-- Outliers
+#### Outliers
 
 Selama eksplorasi data, dilakukan visualisasi distribusi dan boxplot untuk fitur numerik. Dari hasil tersebut, ditemukan adanya nilai-nilai ekstrem (outlier) pada fitur BMI, Height, dan Weight.
 
@@ -125,39 +130,39 @@ Namun, karena outlier adalah bagian dari variasi alami dalam data kesehatan, kep
 
 Pada tahap ini, dilakukan serangkaian langkah untuk menyiapkan data agar dapat digunakan dalam proses pelatihan model machine learning. Teknik-teknik yang digunakan:
 
-1. Penanganan Data Kosong (Missing Values) dan data duplikat
+### 1. Penanganan Data Kosong (Missing Values) dan data duplikat
 
 Dataset diperiksa menggunakan fungsi df.info() dan df.isnull().sum(). Hasilnya menunjukkan bahwa tidak terdapat nilai kosong pada seluruh fitur, sehingga tidak diperlukan imputasi atau penghapusan data.
 
-2. Penanganan terhadap Outlier
+### 2. Penanganan terhadap Outlier
 
 Dari visualisasi boxplot, terlihat adanya outlier pada beberapa fitur numerik seperti BMI, tinggi badan (Height), dan berat badan (Weight). Namun, setelah ditinjau lebih lanjut, diputuskan untuk tidak menghapus outlier tersebut, dengan pertimbangan:
-    - Nilai-nilai ekstrem tersebut masih masuk akal secara fisiologis, terutama dalam konteks data kesehatan.
-    - Outlier bisa merepresentasikan kasus penting seperti obesitas ekstrem atau underweight.
-    - Model yang digunakan seperti Random Forest dikenal cukup robust terhadap outlier, sehingga tidak akan terlalu terpengaruh oleh nilai-nilai tersebut.
+- Nilai-nilai ekstrem tersebut masih masuk akal secara fisiologis, terutama dalam konteks data kesehatan.
+- Outlier bisa merepresentasikan kasus penting seperti obesitas ekstrem atau underweight.
+- Model yang digunakan seperti Random Forest dikenal cukup robust terhadap outlier, sehingga tidak akan terlalu terpengaruh oleh nilai-nilai tersebut.
 
 Keputusan ini diambil agar model tetap bisa belajar dari variasi data yang luas dan mencerminkan kondisi nyata populasi.
 
-3. Pengubahan Tipe Data
+### 3. Pengubahan Tipe Data
 
 Fitur PhysicalActivityLevel diubah menjadi tipe data kategori (category), karena datanya merepresentasikan level aktivitas yang diskrit (1 sampai 4). Ini membantu dalam penanganan data kategorikal dan memperjelas tipe fitur yang digunakan.
 
-4. Encoding Fitur Kategorikal
+### 4. Encoding Fitur Kategorikal
 
 Agar fitur kategorikal dapat digunakan oleh model machine learning, dilakukan encoding dengan urutan dan teknik berikut:
-    - Gender diubah menggunakan One-Hot Encoding, menghasilkan kolom baru (Gender_Male). One-hot digunakan karena tidak ada hubungan ordinal antara kategori gender.
-    - PhysicalActivityLevel diubah ke bentuk numerik menggunakan Label Encoding, karena level 1–4 memiliki arti urutan tingkat aktivitas.
-    - ObesityCategory sebagai label (target) juga diencoding menggunakan LabelEncoder dari scikit-learn. Hasil encoding sebagai berikut:
+- Gender diubah menggunakan One-Hot Encoding, menghasilkan kolom baru (Gender_Male). One-hot digunakan karena tidak ada hubungan ordinal antara kategori gender.
+- PhysicalActivityLevel diubah ke bentuk numerik menggunakan Label Encoding, karena level 1–4 memiliki arti urutan tingkat aktivitas.
+- ObesityCategory sebagai label (target) juga diencoding menggunakan LabelEncoder dari scikit-learn. Hasil encoding sebagai berikut:
 
 ```bash
 {'Normal weight': 0, 'Obese': 1, 'Overweight': 2, 'Underweight': 3}
 ```
 
-5. Standarisasi Fitur Numerik
+### 5. Standarisasi Fitur Numerik
 
 Fitur numerik BMI, Weight, Height, dan Age memiliki skala yang berbeda-beda. Oleh karena itu, dilakukan proses standarisasi menggunakan StandardScaler agar seluruh fitur berada pada skala yang sama (rata-rata = 0 dan standar deviasi = 1). Standarisasi ini penting terutama untuk model seperti Logistic Regression, yang sensitif terhadap skala fitur.
 
-6. **Tampilan Akhir Dataset Setelah Preprocessing**
+### 6. Tampilan Akhir Dataset Setelah Preprocessing
 
 Setelah seluruh proses data preparation dilakukan, termasuk encoding dan standarisasi, berikut adalah **contoh tampilan dataset hasil preprocessing**:
 
@@ -176,16 +181,16 @@ Setelah seluruh proses data preparation dilakukan, termasuk encoding dan standar
 
 Dengan bentuk akhir seperti ini, dataset telah siap digunakan untuk proses pelatihan model machine learning.
 
-7. Split Data (Train-Test Split)
+### 7. Split Data (Train-Test Split)
 
 Setelah semua fitur siap, dataset dibagi menjadi dua bagian:
-    - Data Latih (Training set): 80%
-    - Data Uji (Testing set): 20%
+- Data Latih (Training set): 80%
+- Data Uji (Testing set): 20%
 Pembagian dilakukan dengan menggunakan fungsi train_test_split dari scikit-learn, dan parameter random_state=42 digunakan untuk menjaga hasil yang konsisten saat re-running model.
 
 Setelah dilakukan proses split, didapatkan:
-    - Dimensi data training: (800, 6) untuk fitur (X_train) dan (800,) untuk label (y_train)
-    - Dimensi data testing: (200, 6) untuk fitur (X_test) dan (200,) untuk label (y_test)
+- Dimensi data training: (800, 6) untuk fitur (X_train) dan (800,) untuk label (y_train)
+- Dimensi data testing: (200, 6) untuk fitur (X_test) dan (200,) untuk label (y_test)
 Ini menunjukkan bahwa data terbagi secara proporsional 80:20, dengan total 1.000 sampel.
 
 Dengan seluruh proses di atas, data telah siap sepenuhnya untuk digunakan dalam tahap pemodelan. Semua tahapan data preparation dilakukan secara sistematis dan logis untuk memastikan kualitas input ke model.
@@ -193,8 +198,6 @@ Dengan seluruh proses di atas, data telah siap sepenuhnya untuk digunakan dalam 
 ## **Modeling**
 
 Pada tahap ini dilakukan proses pelatihan model machine learning untuk menyelesaikan permasalahan klasifikasi kategori obesitas. Dua algoritma dipilih sesuai dengan solution statement, yaitu:
-
----
 
 ### 1. Logistic Regression (Baseline)
 
@@ -205,8 +208,6 @@ Logistic Regression digunakan sebagai baseline karena:
 - Cocok untuk klasifikasi multi-kelas yang tidak kompleks
 
 Namun, Logistic Regression memiliki kekurangan dalam menangani **data yang non-linear** atau jika terdapat **hubungan kompleks antar fitur**, sehingga performanya bisa kalah dibanding model yang lebih fleksibel.
-
----
 
 ### 2. Random Forest Classifier
 
@@ -220,8 +221,6 @@ Random Forest adalah algoritma ensemble yang membentuk banyak decision tree dan 
 Kekurangannya adalah:
 - Membutuhkan waktu dan memori lebih besar dibanding model sederhana
 - Kurang interpretatif dibanding Logistic Regression
-
----
 
 ### 3. Evaluasi Awal
 
@@ -237,9 +236,7 @@ Evaluasi awal dilakukan terhadap kedua model menggunakan metrik:
 | Logistic Regression | 0.965    | 0.9658    | 0.965  | 0.9651   |
 | Random Forest       | 0.995    | 0.9951    | 0.995  | 0.9950   |
 
-> Dari hasil di atas, **Random Forest jauh lebih unggul** dibanding Logistic Regression dalam semua metrik. Ini menunjukkan bahwa model ini mampu menangkap kompleksitas data dengan lebih baik.
-
----
+ Dari hasil di atas, **Random Forest jauh lebih unggul** dibanding Logistic Regression dalam semua metrik. Ini menunjukkan bahwa model ini mampu menangkap kompleksitas data dengan lebih baik.
 
 ### 4. Hyperparameter Tuning (Improvement)
 
@@ -264,8 +261,6 @@ Best Parameters: {'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 100}
 ```
 
 Model dengan parameter ini digunakan sebagai **model final**.
-
----
 
 ## **Evaluation**
 
@@ -318,7 +313,6 @@ Model juga dievaluasi menggunakan **confusion matrix**, yang menunjukkan bahwa:
 
 📊 *Visualisasi confusion matrix* ditampilkan di bagian notebook sebagai pendukung interpretasi per kelas.
 
----
 
 ### Kesimpulan Evaluasi
 
@@ -373,8 +367,3 @@ Proses inference ini menunjukkan bagaimana model dapat digunakan untuk:
 - Memprediksi kategori obesitas dari data individu baru
 - Memberikan probabilitas keyakinan model terhadap setiap kelas
 - Menjadi dasar pengambilan keputusan preventif berbasis data di bidang kesehatan
-
-<picture src="assets/namafile"></picture>
-
-**---Ini adalah bagian akhir laporan---**
-
