@@ -12,12 +12,11 @@ Sejalan dengan tantangan tersebut, proyek ini bertujuan untuk membangun model ma
 ## Business Understanding
 
 ### Problem Statements
-- Apa saja faktor yang berpengaruh terhadap tingkat obesitas seseorang?
-- Dapatkah model machine learning secara akurat memprediksi kategori obesitas berdasarkan data karakteristik individu dan gaya hidup?
+- Seberapa akurat model machine learning dalam memprediksi kategori obesitas berdasarkan fitur karakteristik individu?
 
 ### Goals
-- Mengidentifikasi faktor-faktor utama yang berkontribusi terhadap risiko obesitas melalui analisis fitur dan hasil model.
-- Mengembangkan model machine learning untuk memprediksi tingkat obesitas seseorang berdasarkan fitur seperti usia, jenis kelamin, tinggi badan, berat badan, aktivitas fisik, pola makan, dan gaya hidup lainnya.
+- Membangun model klasifikasi obesitas yang akurat berdasarkan kombinasi fitur demografis dan gaya hidup.
+- Membandingkan performa dua algoritma machine learning (Logistic Regression & Random Forest) untuk prediksi obesitas.
 
     ### Solution statements
     - Solusi 1 (Baseline): Membangun model klasifikasi menggunakan algoritma Logistic Regression, yang sederhana dan interpretatif.
@@ -44,7 +43,7 @@ Dataset ini tersedia di Kaggle [Obesity Prediction Dataset](https://www.kaggle.c
 ## Exploratory Data Analysis
 
 ### Jumlah Data dan Fitur
-Dataset ini terdiri dari 1.000 data entri dan 7 kolom (fitur), termasuk label target. Fitur-fitur tersebut mencakup informasi demografis, indikator fisik, dan gaya hidup yang berkaitan dengan obesitas. Semua fitur memiliki nilai yang valid dan tidak terdapat data kosong (missing values).
+Dataset ini terdiri dari 1.000 data entri dan 7 kolom (fitur), termasuk label target. Fitur-fitur tersebut mencakup informasi demografis, indikator fisik, dan gaya hidup yang berkaitan dengan obesitas. Semua fitur memiliki nilai yang valid dan tidak terdapat data kosong (missing values) ataupun data yang duplikat.
 
 ### Tipe Data
 
@@ -131,30 +130,22 @@ Selama eksplorasi data, dilakukan visualisasi distribusi dan boxplot untuk fitur
 
 ![alt text](<assets/outliers weight.png>)
 
-Namun, karena outlier adalah bagian dari variasi alami dalam data kesehatan, keputusan apakah akan menghapus atau mempertahankannya dijelaskan secara lebih lengkap di bagian Data Preparation.
-
-## Data Preparation
-
-Pada tahap ini, dilakukan serangkaian langkah untuk menyiapkan data agar dapat digunakan dalam proses pelatihan model machine learning. Teknik-teknik yang digunakan:
-
-### 1. Penanganan Data Kosong (Missing Values) dan data duplikat
-
-Dataset diperiksa menggunakan fungsi df.info() dan df.isnull().sum(). Hasilnya menunjukkan bahwa tidak terdapat nilai kosong pada seluruh fitur, sehingga tidak diperlukan imputasi atau penghapusan data.
-
-### 2. Penanganan terhadap Outlier
-
-Dari visualisasi boxplot, terlihat adanya outlier pada beberapa fitur numerik seperti BMI, tinggi badan (Height), dan berat badan (Weight). Namun, setelah ditinjau lebih lanjut, diputuskan untuk tidak menghapus outlier tersebut, dengan pertimbangan:
+Namun, setelah ditinjau lebih lanjut, diputuskan untuk tidak menghapus outlier tersebut, dengan pertimbangan:
 - Nilai-nilai ekstrem tersebut masih masuk akal secara fisiologis, terutama dalam konteks data kesehatan.
 - Outlier bisa merepresentasikan kasus penting seperti obesitas ekstrem atau underweight.
 - Model yang digunakan seperti Random Forest dikenal cukup robust terhadap outlier, sehingga tidak akan terlalu terpengaruh oleh nilai-nilai tersebut.
 
 Keputusan ini diambil agar model tetap bisa belajar dari variasi data yang luas dan mencerminkan kondisi nyata populasi.
 
-### 3. Pengubahan Tipe Data
+## Data Preparation
+
+Pada tahap ini, dilakukan serangkaian langkah untuk menyiapkan data agar dapat digunakan dalam proses pelatihan model machine learning. Teknik-teknik yang digunakan:
+
+### 1. Pengubahan Tipe Data
 
 Fitur PhysicalActivityLevel diubah menjadi tipe data kategori (category), karena datanya merepresentasikan level aktivitas yang diskrit (1 sampai 4). Ini membantu dalam penanganan data kategorikal dan memperjelas tipe fitur yang digunakan.
 
-### 4. Encoding Fitur Kategorikal
+### 2. Encoding Fitur Kategorikal
 
 Agar fitur kategorikal dapat digunakan oleh model machine learning, dilakukan encoding dengan urutan dan teknik berikut:
 - Gender diubah menggunakan One-Hot Encoding, menghasilkan kolom baru (Gender_Male). One-hot digunakan karena tidak ada hubungan ordinal antara kategori gender.
@@ -165,11 +156,11 @@ Agar fitur kategorikal dapat digunakan oleh model machine learning, dilakukan en
 {'Normal weight': 0, 'Obese': 1, 'Overweight': 2, 'Underweight': 3}
 ```
 
-### 5. Standarisasi Fitur Numerik
+### 3. Standarisasi Fitur Numerik
 
 Fitur numerik BMI, Weight, Height, dan Age memiliki skala yang berbeda-beda. Oleh karena itu, dilakukan proses standarisasi menggunakan StandardScaler agar seluruh fitur berada pada skala yang sama (rata-rata = 0 dan standar deviasi = 1). Standarisasi ini penting terutama untuk model seperti Logistic Regression, yang sensitif terhadap skala fitur.
 
-### 6. Tampilan Akhir Dataset Setelah Preprocessing
+### 4. Tampilan Akhir Dataset Setelah Preprocessing
 
 Setelah seluruh proses data preparation dilakukan, termasuk encoding dan standarisasi, berikut adalah **contoh tampilan dataset hasil preprocessing**:
 
@@ -188,7 +179,7 @@ Setelah seluruh proses data preparation dilakukan, termasuk encoding dan standar
 
 Dengan bentuk akhir seperti ini, dataset telah siap digunakan untuk proses pelatihan model machine learning.
 
-### 7. Split Data (Train-Test Split)
+### 5. Split Data (Train-Test Split)
 
 Setelah semua fitur siap, dataset dibagi menjadi dua bagian:
 - Data Latih (Training set): 80%
@@ -348,13 +339,9 @@ Performa ini mengonfirmasi bahwa tuning parameter berhasil menjaga keakuratan ti
 
 ### Kesimpulan Evaluasi
 
-Model **Random Forest dengan hyperparameter tuning** dipilih sebagai model akhir karena:
+Berdasarkan hasil evaluasi terhadap kedua model, Random Forest Classifier menunjukkan performa yang paling unggul, baik dari segi akurasi maupun keseimbangan metrik precision dan recall. Setelah dilakukan hyperparameter tuning, model ini mampu mencapai akurasi sebesar 99,5% dan F1-score yang sangat tinggi di seluruh kelas kategori obesitas.
 
-- Mencapai performa tertinggi secara konsisten
-- Menghasilkan klasifikasi yang akurat di semua kelas
-- Memiliki keseimbangan precision dan recall yang sangat baik
-
-Model ini dapat diandalkan untuk digunakan dalam sistem prediksi obesitas berbasis machine learning dengan tingkat kepercayaan tinggi.
+Kesimpulannya, model Random Forest terbukti mampu secara **akurat memprediksi kategori obesitas berdasarkan karakteristik individu**, sehingga menjawab problem statement dan mencapai tujuan proyek. Model ini dapat dijadikan solusi efektif untuk membantu deteksi dini obesitas dalam sistem berbasis machine learning.
 
 ## **Inference**
 
